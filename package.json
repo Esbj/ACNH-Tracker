@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "parcel": "^2.8.3"
+  },
+  "scripts": {
+    "start": "parcel"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.3",
+    "parcel": "^2.8.3"
+  },
+  "source": "index.html"
+}
