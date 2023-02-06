@@ -2,17 +2,20 @@
 
 ##About
 
-This is an examination project for JS fördjupning at Borås Yrkeshögskola - Webbutvecklare React. 
+This is an examination project for the cource Webbprogrammering med JavaScript fördjupning at Borås Yrkeshögskola - Webbutvecklare React. 
 
 ---
 This application is aimed to "completionists" of the game Animal Crossint: New Horizons for the Nintendo Switch. 
 
 The app helps keeping track of what critters can be caught in the game at certain points in time, and where to catch them in order to catch every single one. 
+The data in the app is pulled from from the Animal Crossing wiki: [Nookipedia](https://nookipedia.com/wiki/Main_Page)
 
+----
 ##Technologies
 * TypeScript
 * SASS
 * Parcel compiler
+* [Nookipedia API](https://api.nookipedia.com/)
 
 ##Get started
 To run the app start by
