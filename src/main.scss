@@ -1,0 +1,23 @@
+@use "SASS" as *;
+
+header {
+  div:first-of-type {
+    width: fit-content;
+    padding: 0.5rem;
+    background-color: $warm_beige;
+
+    h1 {
+      color: $heading;
+      font-family: "FinkHeavy";
+      font-weight: lighter;
+    }
+  }
+  div {
+    display: flex;
+    gap: 5rem;
+    p {
+      font-family: "FOT-Rodin Pro UB";
+      font-weight: 100;
+    }
+  }
+}
