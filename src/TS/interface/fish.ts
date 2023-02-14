@@ -1,17 +1,17 @@
-export interface fish {
+export interface Fish {
   name:         string;
   url:          string;
   number:       number;
-  imageURL:     string;
-  renderURL:    string;
+  image_url:    string;
+  render_url:   string;
   location:     Location;
-  shadowSize:   ShadowSize;
+  shadow_size:  ShadowSize;
   rarity:       Rarity;
-  totalCatch:   number;
-  sellNook:     number;
-  sellCj:       number;
-  tankWidth:    number;
-  tankLength:   number;
+  total_catch:  number;
+  sell_nook:    number;
+  sell_cj:      number;
+  tank_width:   number;
+  tank_length:  number;
   catchphrases: string[];
   north:        North;
   south:        North;
@@ -28,10 +28,10 @@ export enum Location {
 }
 
 export interface North {
-  availabilityArray: AvailabilityArray[];
-  timesByMonth:      { [key: string]: Time };
-  months:            string;
-  monthsArray:       number[];
+  availability_array: AvailabilityArray[];
+  times_by_month:     { [key: string]: Time };
+  months:             string;
+  months_array:       number[];
 }
 
 export interface AvailabilityArray {

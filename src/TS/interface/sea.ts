@@ -1,26 +1,26 @@
-export interface sea {
-  name:           string;
-  url:            string;
-  number:         number;
-  imageURL:       string;
-  renderURL:      string;
-  shadowSize:     ShadowSize;
-  shadowMovement: ShadowMovement;
-  rarity:         string;
-  totalCatch:     number;
-  sellNook:       number;
-  tankWidth:      number;
-  tankLength:     number;
-  catchphrases:   string[];
-  north:          North;
-  south:          North;
+export interface Sea {
+  name:            string;
+  url:             string;
+  number:          number;
+  image_url:       string;
+  render_url:      string;
+  shadow_size:     ShadowSize;
+  shadow_movement: ShadowMovement;
+  rarity:          string;
+  total_catch:     number;
+  sell_nook:       number;
+  tank_width:      number;
+  tank_length:     number;
+  catchphrases:    string[];
+  north:           North;
+  south:           North;
 }
 
 export interface North {
-  availabilityArray: AvailabilityArray[];
-  timesByMonth:      { [key: string]: Time };
-  months:            string;
-  monthsArray:       number[];
+  availability_array: AvailabilityArray[];
+  times_by_month:     { [key: string]: Time };
+  months:             string;
+  months_array:       number[];
 }
 
 export interface AvailabilityArray {
