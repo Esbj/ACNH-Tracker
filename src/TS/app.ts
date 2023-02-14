@@ -1,26 +1,31 @@
-import {sea}  from './interface/sea'
-import {fish}  from './interface/fish'
-import {bugs as bug}  from './interface/bugs'
-
+import {Sea}from './interface/sea'
+import {Bugs}from './interface/bugs'
+import {Fish}from './interface/fish'
 class Model {
   private url = "https://api.nookipedia.com/nh/";
   private key = "?api_key=814cd58a-d08e-4955-a123-6f42f8356616";
 
-  async fetcher(path: string){
+  async fetcher(path: string) {
     const fullUrl = this.url + path + this.key;
     const res = await fetch(fullUrl);
     const data = await res.json();
-    console.log(fullUrl)
     return data;
   }
 }
 class View {
+  public critters:HTMLElement = document.querySelector('#critters') as HTMLElement
+  printCreature(card:HTMLDivElement){
+    this.critters.append(card)
+  }
 }
 
 class Controller {
   public activeMonth!: string;
+  private fishData: any;
+  private bugData: any;
+  private seaData: any;
 
-  constructor() {
+  constructor(model?: Model, view?: View) {
     const months = document.querySelectorAll("div > p");
     months.forEach((m) =>
       m.addEventListener("click", () => {
@@ -28,26 +33,88 @@ class Controller {
       })
     );
   }
-
-  createSeaCreature(seaCreature: sea) {
+  capitalize(word:string){
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  createSeaCreature(creature: Sea) {
     let holder = document.createElement("div");
-    const image = document.createElement("img")
-    image.setAttribute("src", seaCreature.imageURL)
-    holder.append(image)
+    holder.classList.add("critter");
+    const image = document.createElement("img");
+    image.setAttribute("src", creature.image_url);
+    holder.append(image);
     holder.innerHTML += `
-    <p>${seaCreature.name}</p>
+    <a href = ${creature.url} target="_blank">${this.capitalize(creature.name)}</a>
     <p>
-      <span>Avalible: ${seaCreature.north.timesByMonth}</span>
-      <span>Location: </span>
+      Avalible:</br>
+      ${creature.north.availability_array[0].months}</br>
+      ${creature.north.availability_array[0].time}
     </p>
-    `
-    console.log(holder)
+    <p>
+      Shadow size:</br>
+      ${creature.shadow_size} 
+    </p>
+    `;
+    return holder
+  }
+  createBug(creature: Bugs) {
+    let holder = document.createElement("div");
+    holder.classList.add("critter");
+    const image = document.createElement("img");
+    image.setAttribute("src", creature.image_url);
+    holder.append(image);
+    holder.innerHTML += `
+    <a href = ${creature.url} target="_blank">${this.capitalize(creature.name)}</a>
+    <p>
+      Avalible:</br>
+      ${creature.north.months}</br>
+      ${creature.north.availability_array[0].time}
+    </p>
+    <p>
+      Location:</br>
+      ${creature.location} 
+    </p>
+    `;
+    return holder
+  }
+  createFish(creature: Fish) {
+    let holder = document.createElement("div");
+    holder.classList.add("critter");
+    const image = document.createElement("img");
+    image.setAttribute("src", creature.image_url);
+    holder.append(image);
+    console.log(creature)
+    holder.innerHTML += `
+    <a href = ${creature.url} target="_blank">${this.capitalize(creature.name)}</a>
+    <p>
+      Avalible:</br>
+      ${creature.north.months}</br>
+      ${creature.north.availability_array[0].time}
+    </p>
+    <p>
+      Location:</br>
+      ${creature.location} 
+    </p>
+    <p>
+      Shadow size:</br>
+      ${creature.shadow_size} 
+    </p>
+    `;
+    return holder
   }
 }
 
-let controller = new Controller();
 let view = new View();
 let model = new Model();
-model.fetcher("bugs");
-model.fetcher("sea");
-model.fetcher("fish");
+let controller = new Controller(model, view);
+model.fetcher('sea').then(c => c.forEach((critter:Sea) =>{
+  let div = controller.createSeaCreature(critter);
+  view.printCreature(div)
+}))
+model.fetcher('fish').then(c => c.forEach((critter:Fish) =>{
+  let div = controller.createFish(critter);
+  view.printCreature(div)
+}))
+model.fetcher('bugs').then(c => c.forEach((critter:Bugs) =>{
+  let div = controller.createBug(critter);
+  view.printCreature(div)
+}))
