@@ -6,10 +6,11 @@ class Model {
   private url = "https://api.nookipedia.com/nh/";
   private key = "?api_key=814cd58a-d08e-4955-a123-6f42f8356616";
 
-  async fetcher(path: string): Promise<sea> {
+  async fetcher(path: string){
     const fullUrl = this.url + path + this.key;
     const res = await fetch(fullUrl);
     const data = await res.json();
+    console.log(fullUrl)
     return data;
   }
 }
@@ -28,7 +29,7 @@ class Controller {
     );
   }
 
-  createCard(seaCreature: sea) {
+  createSeaCreature(seaCreature: sea) {
     let holder = document.createElement("div");
     const image = document.createElement("img")
     image.setAttribute("src", seaCreature.imageURL)
@@ -47,4 +48,6 @@ class Controller {
 let controller = new Controller();
 let view = new View();
 let model = new Model();
+model.fetcher("bugs");
 model.fetcher("sea");
+model.fetcher("fish");
