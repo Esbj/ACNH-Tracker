@@ -67,14 +67,38 @@ class View {
 
 class Controller {
   public activeMonth!: number | undefined;
-  constructor() {
+  private model: Model;
+  constructor(model: Model) {
+    this.model = model;
     const months = document.querySelectorAll("div > p");
     months.forEach((m) =>
       m.addEventListener("click", () => {
         this.activeMonth = this.monthToNumber(m.innerHTML);
-        console.log(this.activeMonth);
+        this.filterCreatures(
+          this.activeMonth,
+          this.model.fishData,
+          this.model.bugData,
+          this.model.seaData
+        );
       })
     );
+  }
+  filterCreatures(
+    month: number,
+    fishArr?: Fish[],
+    bugsArr?: Bugs[],
+    seaArr?: Sea[]
+  ) {
+    //combine arrays if they are present, soulution found via chatGTP
+    const creatures: any[] = [
+      ...(fishArr || []),
+      ...(bugsArr || []),
+      ...(seaArr || [])
+    ];
+    const foundCreatures = creatures.filter((c) =>
+      c.north.months_array.includes(month)
+    );
+    return foundCreatures;
   }
   monthToNumber(month: string): number {
     const currentMonth = new Date().getMonth() + 1;
@@ -185,7 +209,7 @@ class Controller {
 
 let view = new View();
 let model = new Model();
-let controller = new Controller();
+let controller = new Controller(model);
 
 model.fetcher("sea").then((c) =>
   c.forEach((critter: Sea) => {
