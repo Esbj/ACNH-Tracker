@@ -4,6 +4,8 @@
 
 This is an examination project for the cource Webbprogrammering med JavaScript fördjupning at Borås Yrkeshögskola - Webbutvecklare React. 
 
+The program is developed by me, [Alexander Esbjörnsson](https://www.linkedin.com/in/alexander-esbjornsson/)
+
 ---
 This application is aimed to "completionists" of the game Animal Crossint: New Horizons for the Nintendo Switch. 
 
