@@ -60,8 +60,16 @@ class View {
   public critters: HTMLElement = document.querySelector(
     "#critters"
   ) as HTMLElement;
+  clear() {
+    this.critters.innerHTML = "";
+  }
   printCreature(card: HTMLDivElement) {
     this.critters.append(card);
+  }
+  printCreatures(cards: HTMLDivElement[]) {
+    for (const card in cards) {
+      this.critters.append(card);
+    }
   }
 }
 
@@ -74,30 +82,49 @@ class Controller {
     months.forEach((m) =>
       m.addEventListener("click", () => {
         this.activeMonth = this.monthToNumber(m.innerHTML);
-        this.filterCreatures(
-          this.activeMonth,
-          this.model.fishData,
-          this.model.bugData,
-          this.model.seaData
-        );
+        const creatures = this.filterCreatures(this.activeMonth);
+        const bugs = this.generateBug(creatures.bug);
+        const sea = this.generateSeaCreatures(creatures.sea);
+        const fish = this.generateFish(creatures.fish);
+        console.log(this.activeMonth)
+        console.log(creatures)
+        bugs.forEach((b) => {
+          view.clear();
+          view.printCreature(b);
+        });
+        view.clear();
+        fish.forEach((f) => {
+          view.printCreature(f);
+        });
+        view.clear();
+        sea.forEach((s) => {
+          view.printCreature(s);
+        });
+
       })
     );
   }
-  filterCreatures(
-    month: number,
-    fishArr?: Fish[],
-    bugsArr?: Bugs[],
-    seaArr?: Sea[]
-  ) {
-    //combine arrays if they are present, soulution found via chatGTP
-    const creatures: any[] = [
-      ...(fishArr || []),
-      ...(bugsArr || []),
-      ...(seaArr || [])
-    ];
-    const foundCreatures = creatures.filter((c) =>
-      c.north.months_array.includes(month)
-    );
+  filterCreatures(month: number): { [key: string]: any[] } {
+    const foundCreatures: { [key: string]: any[] } = {
+      bug: [],
+      fish: [],
+      sea: []
+    };
+    this.model.bugData.forEach((bug) => {
+      if (bug.north.months_array.includes(month)) {
+        foundCreatures.bug.push(bug);
+      }
+    });
+    this.model.fishData.forEach((fish) => {
+      if (fish.north.months_array.includes(month)) {
+        foundCreatures.fish.push(fish);
+      }
+    });
+    this.model.seaData.forEach((sea) => {
+      if (sea.north.months_array.includes(month)) {
+        foundCreatures.sea.push(sea);
+      }
+    });
     return foundCreatures;
   }
   monthToNumber(month: string): number {
@@ -134,98 +161,84 @@ class Controller {
   capitalize(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
-  createSeaCreature(creature: Sea) {
-    let holder = document.createElement("div");
-    holder.classList.add("critter");
-    const image = document.createElement("img");
-    image.setAttribute("src", creature.image_url);
-    holder.append(image);
-    holder.innerHTML += `
-    <a href = ${creature.url} target="_blank">${this.capitalize(
-      creature.name
-    )}</a>
+  generateSeaCreatures(creatures: Sea[]) {
+    const res: HTMLDivElement[] = [];
+    creatures.forEach((c) => {
+      let holder = document.createElement("div");
+      holder.classList.add("critter");
+      const image = document.createElement("img");
+      image.setAttribute("src", c.image_url);
+      holder.append(image);
+      holder.innerHTML += `
+      <a href = ${c.url} target="_blank">${this.capitalize(c.name)}</a>
     <p>
       Avalible:</br>
-      ${creature.north.availability_array[0].months}</br>
-      ${creature.north.availability_array[0].time}
-    </p>
-    <p>
+      ${c.north.availability_array[0].months}</br>
+      ${c.north.availability_array[0].time}
+      </p>
+      <p>
       Shadow size:</br>
-      ${creature.shadow_size} 
-    </p>
-    `;
-    return holder;
+      ${c.shadow_size} 
+      </p>
+      `;
+      res.push(holder);
+    });
+    return res;
   }
-  createBug(creature: Bugs) {
-    let holder = document.createElement("div");
-    holder.classList.add("critter");
-    const image = document.createElement("img");
-    image.setAttribute("src", creature.image_url);
-    holder.append(image);
-    holder.innerHTML += `
-    <a href = ${creature.url} target="_blank">${this.capitalize(
-      creature.name
-    )}</a>
+  generateBug(creatures: Bugs[]) {
+    const res: HTMLDivElement[] = [];
+    creatures.forEach((c) => {
+      let holder = document.createElement("div");
+      holder.classList.add("critter");
+      const image = document.createElement("img");
+      image.setAttribute("src", c.image_url);
+      holder.append(image);
+      holder.innerHTML += `
+      <a href = ${c.url} target="_blank">${this.capitalize(c.name)}</a>
     <p>
       Avalible:</br>
-      ${creature.north.months}</br>
-      ${creature.north.availability_array[0].time}
-    </p>
-    <p>
+      ${c.north.availability_array[0].months}</br>
+      ${c.north.availability_array[0].time}
+      </p>
+      <p>
       Location:</br>
-      ${creature.location} 
-    </p>
-    `;
-    return holder;
+      ${c.location} 
+      </p>
+      `;
+      res.push(holder);
+    });
+    return res;
   }
-  createFish(creature: Fish) {
-    let holder = document.createElement("div");
-    holder.classList.add("critter");
-    const image = document.createElement("img");
-    image.setAttribute("src", creature.image_url);
-    holder.append(image);
-    // console.log(creature);
-    holder.innerHTML += `
-    <a href = ${creature.url} target="_blank">${this.capitalize(
-      creature.name
-    )}</a>
+  generateFish(creatures: Fish[]) {
+    const res: HTMLDivElement[] = [];
+    creatures.forEach((c) => {
+      let holder = document.createElement("div");
+      holder.classList.add("critter");
+      const image = document.createElement("img");
+      image.setAttribute("src", c.image_url);
+      holder.append(image);
+      holder.innerHTML += `
+      <a href = ${c.url} target="_blank">${this.capitalize(c.name)}</a>
     <p>
       Avalible:</br>
-      ${creature.north.months}</br>
-      ${creature.north.availability_array[0].time}
-    </p>
-    <p>
-      Location:</br>
-      ${creature.location} 
-    </p>
-    <p>
+      ${c.north.availability_array[0].months}</br>
+      ${c.north.availability_array[0].time}
+      </p>
+      <p>
       Shadow size:</br>
-      ${creature.shadow_size} 
-    </p>
-    `;
-    return holder;
+      ${c.shadow_size} 
+      </p>
+      <p>
+      Location:</br>
+      ${c.location} 
+      </p>
+      `;
+      res.push(holder);
+    });
+    return res;
   }
 }
 
 let view = new View();
 let model = new Model();
 let controller = new Controller(model);
-
-model.fetcher("sea").then((c) =>
-  c.forEach((critter: Sea) => {
-    let div = controller.createSeaCreature(critter);
-    view.printCreature(div);
-  })
-);
-model.fetcher("fish").then((c) =>
-  c.forEach((critter: Fish) => {
-    let div = controller.createFish(critter);
-    view.printCreature(div);
-  })
-);
-model.fetcher("bugs").then((c) =>
-  c.forEach((critter: Bugs) => {
-    let div = controller.createBug(critter);
-    view.printCreature(div);
-  })
-);
