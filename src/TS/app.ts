@@ -5,7 +5,6 @@ class Model {
   private url = "https://api.nookipedia.com/nh/";
   private key = "?api_key=814cd58a-d08e-4955-a123-6f42f8356616";
 
-
   private _fishData: Fish[] = [];
   public get fishData(): Fish[] {
     return this._fishData;
@@ -29,7 +28,7 @@ class Model {
   public set seaData(v: Sea[]) {
     this._seaData = v;
   }
-  constructor(){
+  constructor() {
     this.fetcher("fish").then((data) => {
       data.forEach((fish: Fish) => {
         this._fishData.push(fish);
@@ -63,15 +62,33 @@ class View {
 }
 
 class Controller {
-  public activeMonth!: string;
-
+  public activeMonth!: number | undefined;
   constructor() {
     const months = document.querySelectorAll("div > p");
     months.forEach((m) =>
       m.addEventListener("click", () => {
-        this.activeMonth = m.innerHTML;
+        this.activeMonth = this.monthToNumber(m.innerHTML);
+        console.log(this.activeMonth)
       })
     );
+  }
+  monthToNumber(month: string):number{
+    const currentMonth = new Date().getMonth()+1
+    switch(month){
+      case 'January': return 1
+      case 'Febuary': return 2
+      case 'March': return 3
+      case 'April': return 4
+      case 'May': return 5
+      case 'June': return 6
+      case 'July': return 7
+      case 'August': return 8
+      case 'September': return 9
+      case 'October': return 10
+      case 'November': return 11
+      case 'December': return 12
+      default: return currentMonth;
+    }
   }
   capitalize(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);
@@ -126,7 +143,7 @@ class Controller {
     const image = document.createElement("img");
     image.setAttribute("src", creature.image_url);
     holder.append(image);
-    console.log(creature);
+    // console.log(creature);
     holder.innerHTML += `
     <a href = ${creature.url} target="_blank">${this.capitalize(
       creature.name
