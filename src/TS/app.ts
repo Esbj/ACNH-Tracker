@@ -1,7 +1,7 @@
 import { Sea } from "./interface/sea";
 import { Bugs } from "./interface/bugs";
 import { Fish } from "./interface/fish";
-import secret from "./secret";
+// import secret from "./secret";
 class Model {
   private url = "https://api.nookipedia.com/nh/";
 
@@ -46,7 +46,7 @@ class Model {
     });
   }
   async fetcher(path: string) {
-    const fullUrl = this.url + path + secret.API_KEY;
+    const fullUrl = this.url + path + "?api_key=814cd58a-d08e-4955-a123-6f42f8356616";
     const res = await fetch(fullUrl);
     const data = await res.json();
     return data;
