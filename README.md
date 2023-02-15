@@ -24,5 +24,6 @@ To run the app start by
 1. Clone the repository by typing the following into prefered terminal
 `git clone https://github.com/Esbj/ACNH-Tracker.git`
 2. Install dependencies with `npm i`
-3. Run the app with `npm run start`
-4. Open up the site in your browser, default is [localhost:1234](localhost:1234/)
+3. Copy the .env_example file and name it .env Paste your own API key where it says `[YOUR_API_KEY_HERE]`
+4. Run the app with `npm run start`
+5. Open up the site in your browser, default is [localhost:1234](localhost:1234/)
