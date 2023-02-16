@@ -1,5 +1,4 @@
-/// <reference types="@types/node" />
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 import { Sea } from "./interface/sea";
 import { Bugs } from "./interface/bugs";
@@ -67,7 +66,7 @@ class View {
     this.critters.append(card);
   }
   printCreatures(cards: HTMLDivElement[]) {
-    for (const card in cards) {
+    for (const card of cards) {
       this.critters.append(card);
     }
   }
@@ -76,33 +75,31 @@ class View {
 class Controller {
   public activeMonth!: number | undefined;
   private model: Model;
-  constructor(model: Model) {
+  private view: View;
+  constructor(model: Model, view: View) {
     this.model = model;
+    this.view = view;
     const months = document.querySelectorAll("div > p");
-    months.forEach((m) =>
-      m.addEventListener("click", () => {
-        this.activeMonth = this.monthToNumber(m.innerHTML);
-        const creatures = this.filterCreatures(this.activeMonth);
-        const bugs = this.generateBug(creatures.bug);
-        const sea = this.generateSeaCreatures(creatures.sea);
-        const fish = this.generateFish(creatures.fish);
-        console.log(this.activeMonth)
-        console.log(creatures)
-        bugs.forEach((b) => {
-          view.clear();
-          view.printCreature(b);
-        });
-        view.clear();
-        fish.forEach((f) => {
-          view.printCreature(f);
-        });
-        view.clear();
-        sea.forEach((s) => {
-          view.printCreature(s);
-        });
-
-      })
-    );
+    months.forEach((month) => {
+      month.classList.remove("active");
+      month.addEventListener("click", () => {
+        months.forEach((m) => m.classList.remove("active"));
+        month.classList.add("active");
+        this.activeMonth = this.monthToNumber(month.innerHTML);
+        const foundCreatures = this.filterCreatures(this.activeMonth);
+        console.log(foundCreatures.bug);
+        const bugs = this.generateBugs(foundCreatures.bug);
+        const sea = this.generateSeaCreatures(foundCreatures.sea);
+        const fish = this.generateFish(foundCreatures.fish);
+        this.view.clear();
+        this.view.printCreatures(bugs);
+        this.view.printCreatures(fish);
+        this.view.printCreatures(sea);
+      });
+    });
+  }
+  printAll() {
+    console.log(this.generateBugs(this.model.bugData));
   }
   filterCreatures(month: number): { [key: string]: any[] } {
     const foundCreatures: { [key: string]: any[] } = {
@@ -161,23 +158,23 @@ class Controller {
   capitalize(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
-  generateSeaCreatures(creatures: Sea[]) {
+  generateSeaCreatures(creatures: Sea[]): HTMLDivElement[] {
     const res: HTMLDivElement[] = [];
     creatures.forEach((c) => {
       let holder = document.createElement("div");
       holder.classList.add("critter");
-      const image = document.createElement("img");
-      image.setAttribute("src", c.image_url);
-      holder.append(image);
       holder.innerHTML += `
-      <a href = ${c.url} target="_blank">${this.capitalize(c.name)}</a>
+      <a href = ${c.url} target="_blank">
+        <img src="${c.image_url}">
+        ${this.capitalize(c.name)}
+      </a>
     <p>
-      Avalible:</br>
-      ${c.north.availability_array[0].months}</br>
+      Avalible:
+      ${c.north.availability_array[0].months}
       ${c.north.availability_array[0].time}
       </p>
       <p>
-      Shadow size:</br>
+      Shadow size:
       ${c.shadow_size} 
       </p>
       `;
@@ -185,23 +182,23 @@ class Controller {
     });
     return res;
   }
-  generateBug(creatures: Bugs[]) {
+  generateBugs(creatures: Bugs[]) {
     const res: HTMLDivElement[] = [];
     creatures.forEach((c) => {
       let holder = document.createElement("div");
       holder.classList.add("critter");
-      const image = document.createElement("img");
-      image.setAttribute("src", c.image_url);
-      holder.append(image);
       holder.innerHTML += `
-      <a href = ${c.url} target="_blank">${this.capitalize(c.name)}</a>
+      <a href = ${c.url} target="_blank">
+        <img src="${c.image_url}">
+        ${this.capitalize(c.name)}
+      </a>
     <p>
-      Avalible:</br>
-      ${c.north.availability_array[0].months}</br>
+      Avalible:
+      ${c.north.availability_array[0].months}
       ${c.north.availability_array[0].time}
       </p>
       <p>
-      Location:</br>
+      Location:
       ${c.location} 
       </p>
       `;
@@ -214,22 +211,22 @@ class Controller {
     creatures.forEach((c) => {
       let holder = document.createElement("div");
       holder.classList.add("critter");
-      const image = document.createElement("img");
-      image.setAttribute("src", c.image_url);
-      holder.append(image);
       holder.innerHTML += `
-      <a href = ${c.url} target="_blank">${this.capitalize(c.name)}</a>
+      <a class="flex" href = ${c.url} target="_blank">
+        <img src="${c.image_url}">
+        ${this.capitalize(c.name)}
+      </a>
     <p>
-      Avalible:</br>
-      ${c.north.availability_array[0].months}</br>
+      Avalible:
+      ${c.north.availability_array[0].months}
       ${c.north.availability_array[0].time}
       </p>
       <p>
-      Shadow size:</br>
+      Shadow size:
       ${c.shadow_size} 
       </p>
       <p>
-      Location:</br>
+      Location:
       ${c.location} 
       </p>
       `;
@@ -239,6 +236,7 @@ class Controller {
   }
 }
 
-let view = new View();
-let model = new Model();
-let controller = new Controller(model);
+const model = new Model();
+const view = new View();
+const controller = new Controller(model, view);
+controller.printAll();

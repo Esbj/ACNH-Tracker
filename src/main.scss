@@ -1,23 +1,26 @@
 @use "SASS" as *;
-
 * {
   padding: 0;
   margin: 0;
 }
+
 body {
   background-image: url("../images/boards.png");
   background-repeat: repeat;
 }
 header {
+  border-radius: 25px;
   background-image: url("../images/header.png");
   @include center(70%);
-  padding: 1px; 
+  padding: 3rem 0;
   margin-top: 5rem;
   div {
     width: fit-content;
   }
   div:first-of-type {
-    margin:5rem auto;
+    @include center(fit-content);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     h1 {
       background-color: $warm_beige;
       padding: 1.4rem;
@@ -28,28 +31,47 @@ header {
     }
   }
   div:not(:first-of-type) {
-    @include flex(5rem, 0);
+    @include flex(5rem, 1.5rem);
     @include center(80%);
     justify-content: center;
     p {
+      @include center(7rem);
+      text-align: center;
+      background-color: $light_beige;
+      padding: 10px;
+      border-radius: 25px;
       font-family: "FOT-Rodin Pro UB";
       font-weight: 100;
+    }
+    p.active{
+      background-color: $warm_beige;
     }
   }
 }
 
 #critters {
-  margin-top: 4rem;
+  padding-top: 4rem;
   @include center(90%);
+  margin-top: 3rem;
   background-color: $light_beige;
   display: flex;
   flex-wrap: wrap;
-  border: p, a {
-    font-family: "FOT-Rodin Pro UB";
-  }
+  border-radius: 50px;
+  box-shadow: -20px 20px 15px black;
+
   .critter {
-    display: flex;
-    margin: 4rem;
+    margin: auto;
+    // margin: 5rem auto;
+    padding: 2rem;
+    border: 5px solid $warm_beige;
+    
+    background-color: $blue;
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items:  center;
+    }
+    
     p {
       margin: 10px, 10px;
     }
