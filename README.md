@@ -1,6 +1,6 @@
-#Animal Crossing: New Horizons tracker
+# Animal Crossing: New Horizons tracker
 
-##About
+## About
 
 This is an examination project for the cource Webbprogrammering med JavaScript fördjupning at Borås Yrkeshögskola - Webbutvecklare React. 
 
@@ -13,13 +13,13 @@ The app helps keeping track of what critters can be caught in the game at certai
 The data in the app is pulled from from the Animal Crossing wiki: [Nookipedia](https://nookipedia.com/wiki/Main_Page)
 
 ----
-##Technologies
+## Technologies
 * TypeScript
 * SASS
 * Parcel compiler
 * [Nookipedia API](https://api.nookipedia.com/)
 
-##Get started
+## Get started
 To run the app start by
 1. Clone the repository by typing the following into prefered terminal
 `git clone https://github.com/Esbj/ACNH-Tracker.git`
