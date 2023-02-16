@@ -1,0 +1,10 @@
+@mixin center($width){
+  width: $width;
+  margin:auto;
+}
+@mixin flex($col-gap, $row-gap){
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: $col-gap;
+  row-gap: $row-gap;
+}

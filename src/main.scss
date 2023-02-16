@@ -1,24 +1,57 @@
 @use "SASS" as *;
 
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  background-image: url("../images/boards.png");
+  background-repeat: repeat;
+}
 header {
-  div:first-of-type {
+  background-image: url("../images/header.png");
+  @include center(70%);
+  padding: 1px; 
+  margin-top: 5rem;
+  div {
     width: fit-content;
-    padding: 0.5rem;
-    background-color: $warm_beige;
-
+  }
+  div:first-of-type {
+    margin:5rem auto;
     h1 {
+      background-color: $warm_beige;
+      padding: 1.4rem;
+      border-radius: 25px;
       color: $heading;
       font-family: "FinkHeavy";
       font-weight: lighter;
     }
   }
-  div {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 5rem;
+  div:not(:first-of-type) {
+    @include flex(5rem, 0);
+    @include center(80%);
+    justify-content: center;
     p {
       font-family: "FOT-Rodin Pro UB";
       font-weight: 100;
+    }
+  }
+}
+
+#critters {
+  margin-top: 4rem;
+  @include center(90%);
+  background-color: $light_beige;
+  display: flex;
+  flex-wrap: wrap;
+  border: p, a {
+    font-family: "FOT-Rodin Pro UB";
+  }
+  .critter {
+    display: flex;
+    margin: 4rem;
+    p {
+      margin: 10px, 10px;
     }
   }
 }
