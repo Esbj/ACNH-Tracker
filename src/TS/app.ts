@@ -168,15 +168,19 @@ class Controller {
         <img src="${c.image_url}">
         ${this.capitalize(c.name)}
       </a>
+    <div>
     <p>
-      Avalible:
-      ${c.north.availability_array[0].months}
+      <span>Avalible:</span>
+      </br>
+      ${c.north.availability_array[0].months}</br>
       ${c.north.availability_array[0].time}
       </p>
       <p>
-      Shadow size:
+      <span>Shadow size:</span>
+      </br>
       ${c.shadow_size} 
       </p>
+      </div>
       `;
       res.push(holder);
     });
@@ -192,15 +196,20 @@ class Controller {
         <img src="${c.image_url}">
         ${this.capitalize(c.name)}
       </a>
-    <p>
-      Avalible:
-      ${c.north.availability_array[0].months}
-      ${c.north.availability_array[0].time}
-      </p>
-      <p>
-      Location:
-      ${c.location} 
-      </p>
+      <div>
+        <p>
+          <span>Avalible:</span>
+          </br>
+          ${c.north.availability_array[0].months}
+          </br>
+          ${c.north.availability_array[0].time}
+        </p>
+        <p>
+          <span>Location:</span>
+          </br>
+          ${c.location} 
+        </p>
+        </div>
       `;
       res.push(holder);
     });
@@ -216,19 +225,21 @@ class Controller {
         <img src="${c.image_url}">
         ${this.capitalize(c.name)}
       </a>
+      <div>
     <p>
-      Avalible:
-      ${c.north.availability_array[0].months}
+      <span>Avalible:</span></br>
+      ${c.north.availability_array[0].months}</br>
       ${c.north.availability_array[0].time}
       </p>
       <p>
-      Shadow size:
+      <span>Shadow size:</span></br>
       ${c.shadow_size} 
       </p>
       <p>
-      Location:
+      <span>Location:</span>
       ${c.location} 
       </p>
+      </div>
       `;
       res.push(holder);
     });
