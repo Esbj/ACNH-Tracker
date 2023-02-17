@@ -8,9 +8,9 @@ import { Fish } from "./interface/fish";
 class Model {
   private url = "https://api.nookipedia.com/nh/";
   private key: string | undefined;
-  fishData: Fish[] = []
-  bugData: Bugs[] = []
-  seaData: Sea[] = []
+  fishData: Fish[] = [];
+  bugData: Bugs[] = [];
+  seaData: Sea[] = [];
   // private _fishData: Fish[] = [];
   // public get fishData(): Fish[] {
   //   return this._fishData;
@@ -60,19 +60,49 @@ class Model {
   }
 }
 class View {
-  public holder: HTMLElement = document.querySelector(
-    "#critters #avalible"
+  public avalible: HTMLElement = document.querySelector(
+    "#avalible"
   ) as HTMLElement;
+  public found: HTMLElement = document.querySelector("#found") as HTMLElement;
   private cards?: HTMLDivElement[];
   clear() {
-    this.holder.innerHTML = "";
+    this.found.innerHTML = "";
+    this.avalible.innerHTML = "";
+  }
+  printAvalible(creature: Creature) {
+    const div = document.createElement("div");
+    div.classList.add("critter")
+    div.innerHTML = `
+      <a href = ${creature.url} target="_blank">
+        <img src = "${creature.image_url}">
+        ${controller.capitalize(creature.name)}
+      </a>
+      <div>
+        <p>
+          <span>Avalible:</span></br>
+          ${creature.north.availability_array[0].months}</br>
+          ${creature.north.availability_array[0].time}
+        </p>
+        ${
+          creature.location ??
+          "<p><span>Location:</span></br>" + creature.location + "</p>"
+        }
+        ${
+          creature.shadow_size ??
+          "<p><span>Shaddow size</span></br>" + creature.shadow_size + "</p>"
+        }
+      </div>
+    `;
+    this.avalible.append(div);
+  }
+  printFound(creature: Creature) {
   }
   printCreature(card: HTMLDivElement) {
-    this.holder.append(card);
+    this.avalible.append(card);
   }
   printCreatures(cards: HTMLDivElement[]) {
     for (const card of cards) {
-      this.holder.append(card);
+      this.avalible.append(card);
     }
   }
 }
@@ -170,17 +200,17 @@ class Controller {
         ${this.capitalize(c.name)}
       </a>
     <div>
-    <p>
-      <span>Avalible:</span>
-      </br>
-      ${c.north.availability_array[0].months}</br>
-      ${c.north.availability_array[0].time}
+      <p>
+        <span>Avalible:</span>
+        </br>
+        ${c.north.availability_array[0].months}</br>
+        ${c.north.availability_array[0].time}
       </p>
       <p>
-      <span>Shadow size:</span>
-      </br>
-      ${c.shadow_size} 
-      </p>
+        <span>Shadow size:</span>
+        </br>
+        ${c.shadow_size} 
+        </p>
       </div>
       `;
       res.push(holder);
@@ -227,19 +257,19 @@ class Controller {
         ${this.capitalize(c.name)}
       </a>
       <div>
-    <p>
-      <span>Avalible:</span></br>
-      ${c.north.availability_array[0].months}</br>
-      ${c.north.availability_array[0].time}
-      </p>
-      <p>
-      <span>Shadow size:</span></br>
-      ${c.shadow_size} 
-      </p>
-      <p>
-      <span>Location:</span></br>
-      ${c.location} 
-      </p>
+        <p>
+          <span>Avalible:</span></br>
+          ${c.north.availability_array[0].months}</br>
+          ${c.north.availability_array[0].time}
+        </p>
+        <p>
+          <span>Shadow size:</span></br>
+          ${c.shadow_size} 
+        </p>
+        <p>
+          <span>Location:</span></br>
+          ${c.location} 
+        </p>
       </div>
       `;
       res.push(holder);
@@ -247,10 +277,18 @@ class Controller {
     return res;
   }
   async findCreature(name: string) {
-    const bugs = await model.fetcher('bugs')
-    bugs.forEach((b:Bugs) => console.log(b.name))
+    name = name.toLocaleLowerCase();
+    const bugs = await model.fetcher("bugs");
+    const sea = await model.fetcher("sea");
+    const fish = await model.fetcher("fish");
+    const allCreatures: Creature[] = [...bugs, ...fish, ...sea];
+    const foundCreature: Creature = allCreatures.find(
+      (c) => c.name === name
+    ) as Creature;
+    //flagga den i arrayen , ev workaround är spara alla id i separat array och flagga dom efter varige hämtning...
     // const savedBugs = this.model.bugData
     // savedBugs.forEach(b => console.log(b.name));
+    return foundCreature
   }
 }
 
@@ -266,4 +304,8 @@ När man clickar på ett görs följande:
 const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
-controller.findCreature("ant");
+
+controller.findCreature("dArner dragonfly").then(creature => {
+  console.log(creature)
+  view.printAvalible(creature)
+});
