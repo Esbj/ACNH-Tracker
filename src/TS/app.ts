@@ -80,7 +80,7 @@ class Controller {
   constructor(model: Model, view: View) {
     this.model = model;
     this.view = view;
-    const months = document.querySelectorAll("div > p");
+    const months = document.querySelectorAll("ul > li");
     months.forEach((month) => {
       month.classList.remove("active");
       month.addEventListener("click", () => {

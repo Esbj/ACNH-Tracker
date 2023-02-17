@@ -7,7 +7,7 @@
 body {
   background-image: url("../images/boards.png");
   background-repeat: repeat;
-  p {
+  * {
     @include bodyFont;
     span {
       font-weight: bolder;
@@ -35,22 +35,26 @@ body {
         font-weight: lighter;
       }
     }
-    div:not(:first-of-type) {
+    ul {
       @include flex(1rem, 1.5rem);
       @include center(80%);
       justify-content: center;
-      p {
-        @include center(7rem);
-        text-align: center;
-        background-color: $light_beige;
-        padding: 10px;
-        border-radius: 25px;
-        font-family: "fot-rodin_pro_ub";
-        font-weight: 100;
-      }
-      p.active {
-        background-color: $warm_beige;
-      }
+      list-style-type: none;
+        li {
+          @include center(7rem);
+          text-align: center;
+          background-color: $light_beige;
+          padding: 10px;
+          border-radius: 25px;
+          font-family: "fot-rodin_pro_ub";
+          font-weight: 100;
+          &.active{
+            background-color: $warm_beige;
+          }
+          &:hover{
+            cursor: pointer;
+          }
+        }
     }
   }
 
