@@ -234,7 +234,7 @@ class Controller {
       ${c.shadow_size} 
       </p>
       <p>
-      <span>Location:</span>
+      <span>Location:</span></br>
       ${c.location} 
       </p>
       </div>
