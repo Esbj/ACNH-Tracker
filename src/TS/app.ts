@@ -11,52 +11,29 @@ class Model {
   fishData: Fish[] = [];
   bugData: Bugs[] = [];
   seaData: Sea[] = [];
-  // private _fishData: Fish[] = [];
-  // public get fishData(): Fish[] {
-  //   return this._fishData;
-  // }
-  // public set fishData(v: Fish[]) {
-  //   this._fishData = v;
-  // }
 
-  // private _bugData: Bugs[] = [];
-  // public get bugData(): Bugs[] {
-  //   return this._bugData;
-  // }
-  // public set bugData(v: Bugs[]) {
-  //   this._bugData = v;
-  // }
-
-  // private _seaData: Sea[] = [];
-  // public get seaData(): Sea[] {
-  //   return this._seaData;
-  // }
-  // public set seaData(v: Sea[]) {
-  //   this._seaData = v;
-  // }
   constructor() {
     this.key = process.env.API_KEY;
-    this.fetcher("fish").then((data) => {
-      data.forEach((fish: Fish) => {
-        this.fishData.push(fish);
-      });
-    });
-    this.fetcher("bugs").then((data) => {
-      data.forEach((bug: Bugs) => {
-        this.bugData.push(bug);
-      });
-    });
-    this.fetcher("sea").then((data) => {
-      data.forEach((sea: Sea) => {
-        this.seaData.push(sea);
-      });
-    });
+    this.init();
   }
   async fetcher(path: string) {
     const fullUrl = this.url + path + this.key;
     const res = await fetch(fullUrl);
     const data = await res.json();
     return data;
+  }
+  private init() {
+    this.fetcher("fish").then((fishies) => {
+      fishies.forEach((fish: Fish) => {
+        this.fishData.push(fish);
+      });
+    });
+    this.fetcher("bugs").then((bugs) => {
+      bugs.forEach((bug: Bugs) => this.bugData.push(bug));
+    });
+    this.fetcher("sea").then((sea) => {
+      sea.forEach((sea: Sea) => this.seaData.push(sea));
+    });
   }
 }
 class View {
@@ -69,9 +46,9 @@ class View {
     this.found.innerHTML = "";
     this.avalible.innerHTML = "";
   }
-  printAvalible(creature: Creature) {
+  printAvalible(creature: Creature<{}>) {
     const div = document.createElement("div");
-    div.classList.add("critter")
+    div.classList.add("critter");
     div.innerHTML = `
       <a href = ${creature.url} target="_blank">
         <img src = "${creature.image_url}">
@@ -83,20 +60,27 @@ class View {
           ${creature.north.availability_array[0].months}</br>
           ${creature.north.availability_array[0].time}
         </p>
-        ${
-          creature.location ??
-          "<p><span>Location:</span></br>" + creature.location + "</p>"
-        }
-        ${
-          creature.shadow_size ??
-          "<p><span>Shaddow size</span></br>" + creature.shadow_size + "</p>"
-        }
       </div>
     `;
+    if (creature.shaddow_size !== undefined) {
+      div.innerHTML += `
+      <p>
+        <span>Shaddow size:</span></br>
+        ${creature.shaddow_size} 
+      </p> 
+      `;
+    }
+    if (creature.location !== undefined) {
+      div.innerHTML += `
+      <p>
+        <span>Location:</span></br>
+        ${creature.location} 
+      </p> 
+      `;
+    }
     this.avalible.append(div);
   }
-  printFound(creature: Creature) {
-  }
+  printFound(creature: Creature<{}>) {}
   printCreature(card: HTMLDivElement) {
     this.avalible.append(card);
   }
@@ -217,7 +201,7 @@ class Controller {
     });
     return res;
   }
-  generateBugs(creatures: Bugs[]) {
+  generateBugs(creatures: Fish[]) {
     const res: HTMLDivElement[] = [];
     creatures.forEach((c) => {
       let holder = document.createElement("div");
@@ -276,36 +260,45 @@ class Controller {
     });
     return res;
   }
+  /*
+  Det sparas ett världe i model som visar om ett kort är insamlat eller inte 
+  När man clickar på ett görs följande:
+    Sök upp kortet i model och flagga det (via controller)
+    Töm inehållet i avalible och collected 
+    Loopa igenom alla creatures i model igen
+    Controller bestämmer baserat på flagga om den ska köra printAvalible eller printCollected
+  */
   async findCreature(name: string) {
-    name = name.toLocaleLowerCase();
-    const bugs = await model.fetcher("bugs");
-    const sea = await model.fetcher("sea");
-    const fish = await model.fetcher("fish");
-    const allCreatures: Creature[] = [...bugs, ...fish, ...sea];
-    const foundCreature: Creature = allCreatures.find(
-      (c) => c.name === name
-    ) as Creature;
-    //flagga den i arrayen , ev workaround är spara alla id i separat array och flagga dom efter varige hämtning...
-    // const savedBugs = this.model.bugData
-    // savedBugs.forEach(b => console.log(b.name));
-    return foundCreature
+    name = name.toLowerCase();
+    const fish = await this.model.fetcher("fish");
+    const sea = await this.model.fetcher("sea");
+    const bugs = await this.model.fetcher("bugs");
+    const allCreatures: Creature<{}>[] = [...sea, ...fish, ...bugs];
+    const foundCreature: Creature<{}> = allCreatures.find(
+      (c) => c.name.toLowerCase() == name
+    ) as Creature<{}>;
+    return foundCreature;
   }
 }
-
-/*
-Det sparas ett världe i model som visar om ett kort är insamlat eller inte 
-När man clickar på ett görs följande:
-  Sök upp kortet i model och flagga det (via controller)
-  Töm inehållet i avalible och collected 
-  Loopa igenom alla creatures i model igen
-  Controller bestämmer baserat på flagga om den ska köra printAvalible eller printCollected
-*/
 
 const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
 
-controller.findCreature("dArner dragonfly").then(creature => {
-  console.log(creature)
-  view.printAvalible(creature)
+controller.findCreature("Blue marlin").then((creature) => {
+  view.printAvalible(creature);
 });
+
+async function printAllCreatures() {
+  model
+    .fetcher("bugs")
+    .then((bugs) => bugs.forEach((bug: Bugs) => view.printAvalible(bug)));
+  model
+    .fetcher("sea")
+    .then((sea) => sea.forEach((sea: Sea) => view.printAvalible(sea)));
+  model
+    .fetcher("fish")
+    .then((fish) => fish.forEach((fish: Fish) => view.printAvalible(fish)));
+}
+
+printAllCreatures();
