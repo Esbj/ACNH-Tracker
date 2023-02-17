@@ -8,44 +8,47 @@ import { Fish } from "./interface/fish";
 class Model {
   private url = "https://api.nookipedia.com/nh/";
   private key: string | undefined;
-  private _fishData: Fish[] = [];
-  public get fishData(): Fish[] {
-    return this._fishData;
-  }
-  public set fishData(v: Fish[]) {
-    this._fishData = v;
-  }
+  fishData: Fish[] = []
+  bugData: Bugs[] = []
+  seaData: Sea[] = []
+  // private _fishData: Fish[] = [];
+  // public get fishData(): Fish[] {
+  //   return this._fishData;
+  // }
+  // public set fishData(v: Fish[]) {
+  //   this._fishData = v;
+  // }
 
-  private _bugData: Bugs[] = [];
-  public get bugData(): Bugs[] {
-    return this._bugData;
-  }
-  public set bugData(v: Bugs[]) {
-    this._bugData = v;
-  }
+  // private _bugData: Bugs[] = [];
+  // public get bugData(): Bugs[] {
+  //   return this._bugData;
+  // }
+  // public set bugData(v: Bugs[]) {
+  //   this._bugData = v;
+  // }
 
-  private _seaData: Sea[] = [];
-  public get seaData(): Sea[] {
-    return this._seaData;
-  }
-  public set seaData(v: Sea[]) {
-    this._seaData = v;
-  }
+  // private _seaData: Sea[] = [];
+  // public get seaData(): Sea[] {
+  //   return this._seaData;
+  // }
+  // public set seaData(v: Sea[]) {
+  //   this._seaData = v;
+  // }
   constructor() {
     this.key = process.env.API_KEY;
     this.fetcher("fish").then((data) => {
       data.forEach((fish: Fish) => {
-        this._fishData.push(fish);
+        this.fishData.push(fish);
       });
     });
     this.fetcher("bugs").then((data) => {
       data.forEach((bug: Bugs) => {
-        this._bugData.push(bug);
+        this.bugData.push(bug);
       });
     });
     this.fetcher("sea").then((data) => {
       data.forEach((sea: Sea) => {
-        this._seaData.push(sea);
+        this.seaData.push(sea);
       });
     });
   }
@@ -60,7 +63,7 @@ class View {
   public holder: HTMLElement = document.querySelector(
     "#critters #avalible"
   ) as HTMLElement;
-  private cards?:HTMLDivElement[]
+  private cards?: HTMLDivElement[];
   clear() {
     this.holder.innerHTML = "";
   }
@@ -89,7 +92,6 @@ class Controller {
         month.classList.add("active");
         this.activeMonth = this.monthToNumber(month.innerHTML);
         const foundCreatures = this.filterCreatures(this.activeMonth);
-        console.log(foundCreatures.bug);
         const bugs = this.generateBugs(foundCreatures.bug);
         const sea = this.generateSeaCreatures(foundCreatures.sea);
         const fish = this.generateFish(foundCreatures.fish);
@@ -244,6 +246,12 @@ class Controller {
     });
     return res;
   }
+  async findCreature(name: string) {
+    const bugs = await model.fetcher('bugs')
+    bugs.forEach((b:Bugs) => console.log(b.name))
+    // const savedBugs = this.model.bugData
+    // savedBugs.forEach(b => console.log(b.name));
+  }
 }
 
 /*
@@ -258,3 +266,4 @@ När man clickar på ett görs följande:
 const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
+controller.findCreature("ant");
