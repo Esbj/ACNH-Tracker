@@ -17,7 +17,7 @@ The data in the app is pulled from from the Animal Crossing wiki: [Nookipedia](h
 * TypeScript
 * SASS
 * Parcel compiler
-* [Nookipedia API](https://api.nookipedia.com/)
+* <a href = "https://api.nookipedia.com/" target="_blank">Nookipedia API</a>
 
 ## Get started
 To run the app start by
