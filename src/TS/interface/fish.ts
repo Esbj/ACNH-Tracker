@@ -1,5 +1,5 @@
 import Creature from './iCreature'
-export interface Fish extends Creature{
+export interface Fish extends Creature<Time>{
   name:         string;
   url:          string;
   number:       number;
@@ -14,8 +14,8 @@ export interface Fish extends Creature{
   tank_width:   number;
   tank_length:  number;
   catchphrases: string[];
-  north:        North;
-  south:        North;
+  north:        North<Time>;
+  south:        North<Time>;
 }
 
 export enum Location {
@@ -28,7 +28,7 @@ export enum Location {
   SeaRaining = "Sea (raining)",
 }
 
-export interface North {
+export interface North <Time>{
   availability_array: AvailabilityArray[];
   times_by_month:     { [key: string]: Time };
   months:             string;
