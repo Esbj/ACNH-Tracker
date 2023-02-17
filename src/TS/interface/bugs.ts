@@ -1,4 +1,5 @@
-export interface Bugs {
+import Creature from "./iCreature";
+export interface Bugs  extends Creature {
   name:         string;
   url:          string;
   number:       number;

@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import Creature from "./interface/iCreature";
 import { Sea } from "./interface/sea";
 import { Bugs } from "./interface/bugs";
 import { Fish } from "./interface/fish";
@@ -244,6 +245,15 @@ class Controller {
     return res;
   }
 }
+
+/*
+Det sparas ett världe i model som visar om ett kort är insamlat eller inte 
+När man clickar på ett görs följande:
+  Sök upp kortet i model och flagga det (via controller)
+  Töm inehållet i avalible och collected 
+  Loopa igenom alla creatures i model igen
+  Controller bestämmer baserat på flagga om den ska köra printAvalible eller printCollected
+*/
 
 const model = new Model();
 const view = new View();

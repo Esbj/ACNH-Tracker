@@ -1,4 +1,5 @@
-export interface Fish {
+import Creature from './iCreature'
+export interface Fish extends Creature{
   name:         string;
   url:          string;
   number:       number;

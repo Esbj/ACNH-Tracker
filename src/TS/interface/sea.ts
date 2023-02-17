@@ -1,4 +1,5 @@
-export interface Sea {
+import Creature from "./iCreature";
+export interface Sea extends Creature {
   name:            string;
   url:             string;
   number:          number;
