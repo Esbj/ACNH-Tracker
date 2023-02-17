@@ -4,90 +4,91 @@
   margin: 0;
 }
 
-p{
-  @include bodyFont;
-  span{
-    font-weight: bolder;
-  }
-}
 body {
   background-image: url("../images/boards.png");
   background-repeat: repeat;
-}
-header {
-  border-radius: 25px;
-  background-image: url("../images/header.png");
-  @include center(70%);
-  padding: 3rem 0;
-  margin-top: 5rem;
-  div {
-    width: fit-content;
-  }
-  div:first-of-type {
-    @include center(fit-content);
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    h1 {
-      background-color: $warm_beige;
-      padding: 1.4rem;
-      border-radius: 25px;
-      color: $heading;
-      font-family: "FinkHeavy";
-      font-weight: lighter;
+  p {
+    @include bodyFont;
+    span {
+      font-weight: bolder;
     }
   }
-  div:not(:first-of-type) {
-    @include flex(1rem, 1.5rem);
-    @include center(80%);
-    justify-content: center;
-    p {
-      @include center(7rem);
-      text-align: center;
-      background-color: $light_beige;
-      padding: 10px;
-      border-radius: 25px;
-      font-family: "fot-rodin_pro_ub";
-      font-weight: 100;
-    }
-    p.active {
-      background-color: $warm_beige;
-    }
-  }
-}
-
-#critters {
-  @include center(90%);
-  @include flex(0, 0rem);
-  padding-top: 4rem;
-  margin-top: 3rem;
-  background-color: $light_beige;
-
-  border-radius: 50px;
-  box-shadow: -20px 20px 15px black;
-
-  .critter {
-    font-family: "Flink Heavy";
-    margin: 1rem auto;
-    padding: 2rem;
-    border: 5px solid $warm_beige;
+  header {
     border-radius: 25px;
-    @include flex(50px, 0rem);
-    justify-content: center;
-    background-color: $blue;
-    a {
-      @include center('100%');
-      text-align: center;
-      color: black;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      &:hover{
-        text-decoration: underline;
+    background-image: url("../images/header.png");
+    @include center(70%);
+    padding: 3rem 0;
+    margin-top: 5rem;
+    div {
+      width: fit-content;
+    }
+    div:first-of-type {
+      @include center(fit-content);
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      h1 {
+        background-color: $warm_beige;
+        padding: 1.4rem;
+        border-radius: 25px;
+        color: $heading;
+        font-family: "FinkHeavy";
+        font-weight: lighter;
       }
     }
+    div:not(:first-of-type) {
+      @include flex(1rem, 1.5rem);
+      @include center(80%);
+      justify-content: center;
+      p {
+        @include center(7rem);
+        text-align: center;
+        background-color: $light_beige;
+        padding: 10px;
+        border-radius: 25px;
+        font-family: "fot-rodin_pro_ub";
+        font-weight: 100;
+      }
+      p.active {
+        background-color: $warm_beige;
+      }
+    }
+  }
 
-    p {
-      margin: 10px, 10px;
+  #critters {
+    @include center(90%);
+    padding-top: 4rem;
+    margin-top: 3rem;
+    background-color: $light_beige;
+    border-radius: 50px;
+    box-shadow: -20px 20px 15px black;
+    #avalible {
+      @include flex(0, 0rem);
+      margin: 0 2rem;
+      .critter {
+        font-family: "Flink Heavy";
+        margin: 1rem auto;
+        padding: 2rem;
+        border: 5px solid $warm_beige;
+        border-radius: 25px;
+        @include flex(50px, 0rem);
+        justify-content: center;
+        background-color: $blue;
+        a {
+          @include center("100%");
+          text-align: center;
+          color: black;
+          text-decoration: none;
+          display: flex;
+          flex-direction: column;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        p {
+          margin: 10px, 10px;
+        }
+      }
     }
   }
 }

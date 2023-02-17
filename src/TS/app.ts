@@ -56,18 +56,19 @@ class Model {
   }
 }
 class View {
-  public critters: HTMLElement = document.querySelector(
-    "#critters"
+  public holder: HTMLElement = document.querySelector(
+    "#critters #avalible"
   ) as HTMLElement;
+  private cards?:HTMLDivElement[]
   clear() {
-    this.critters.innerHTML = "";
+    this.holder.innerHTML = "";
   }
   printCreature(card: HTMLDivElement) {
-    this.critters.append(card);
+    this.holder.append(card);
   }
   printCreatures(cards: HTMLDivElement[]) {
     for (const card of cards) {
-      this.critters.append(card);
+      this.holder.append(card);
     }
   }
 }
@@ -97,9 +98,6 @@ class Controller {
         this.view.printCreatures(sea);
       });
     });
-  }
-  printAll() {
-    console.log(this.generateBugs(this.model.bugData));
   }
   filterCreatures(month: number): { [key: string]: any[] } {
     const foundCreatures: { [key: string]: any[] } = {
@@ -250,4 +248,3 @@ class Controller {
 const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
-controller.printAll();
