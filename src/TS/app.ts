@@ -81,14 +81,6 @@ class View {
     this.avalible.append(div);
   }
   printFound(creature: Creature<{}>) {}
-  printCreature(card: HTMLDivElement) {
-    this.avalible.append(card);
-  }
-  printCreatures(cards: HTMLDivElement[]) {
-    for (const card of cards) {
-      this.avalible.append(card);
-    }
-  }
 }
 
 class Controller {
