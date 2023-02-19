@@ -2,7 +2,7 @@ export default interface Creature<Time> {
   name: string;
   image_url: string;
   location?: string,
-  shaddow_size?: string,
+  shadow_size?: string,
   url: string;
   collected: boolean;
   north: North<Time>,

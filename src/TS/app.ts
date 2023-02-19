@@ -62,11 +62,11 @@ class View {
         </p>
       </div>
     `;
-    if (creature.shaddow_size !== undefined) {
+    if (creature.shadow_size !== undefined) {
       div.innerHTML += `
       <p>
         <span>Shaddow size:</span></br>
-        ${creature.shaddow_size} 
+        ${creature.shadow_size} 
       </p> 
       `;
     }
@@ -106,35 +106,28 @@ class Controller {
         month.classList.add("active");
         this.activeMonth = this.monthToNumber(month.innerHTML);
         const foundCreatures = this.filterCreatures(this.activeMonth);
-        const bugs = this.generateBugs(foundCreatures.bug);
-        const sea = this.generateSeaCreatures(foundCreatures.sea);
-        const fish = this.generateFish(foundCreatures.fish);
         this.view.clear();
-        this.view.printCreatures(bugs);
-        this.view.printCreatures(fish);
-        this.view.printCreatures(sea);
+        for (const creature of foundCreatures) {
+          view.printAvalible(creature);
+        }
       });
     });
   }
-  filterCreatures(month: number): { [key: string]: any[] } {
-    const foundCreatures: { [key: string]: any[] } = {
-      bug: [],
-      fish: [],
-      sea: []
-    };
+  filterCreatures(month: number): Creature<{}>[] {
+    const foundCreatures: any[] = [];
     this.model.bugData.forEach((bug) => {
       if (bug.north.months_array.includes(month)) {
-        foundCreatures.bug.push(bug);
+        foundCreatures.push(bug);
       }
     });
     this.model.fishData.forEach((fish) => {
       if (fish.north.months_array.includes(month)) {
-        foundCreatures.fish.push(fish);
+        foundCreatures.push(fish);
       }
     });
     this.model.seaData.forEach((sea) => {
       if (sea.north.months_array.includes(month)) {
-        foundCreatures.sea.push(sea);
+        foundCreatures.push(sea);
       }
     });
     return foundCreatures;
@@ -173,93 +166,7 @@ class Controller {
   capitalize(word: string) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
-  generateSeaCreatures(creatures: Sea[]): HTMLDivElement[] {
-    const res: HTMLDivElement[] = [];
-    creatures.forEach((c) => {
-      let holder = document.createElement("div");
-      holder.classList.add("critter");
-      holder.innerHTML += `
-      <a href = ${c.url} target="_blank">
-        <img src="${c.image_url}">
-        ${this.capitalize(c.name)}
-      </a>
-    <div>
-      <p>
-        <span>Avalible:</span>
-        </br>
-        ${c.north.availability_array[0].months}</br>
-        ${c.north.availability_array[0].time}
-      </p>
-      <p>
-        <span>Shadow size:</span>
-        </br>
-        ${c.shadow_size} 
-        </p>
-      </div>
-      `;
-      res.push(holder);
-    });
-    return res;
-  }
-  generateBugs(creatures: Fish[]) {
-    const res: HTMLDivElement[] = [];
-    creatures.forEach((c) => {
-      let holder = document.createElement("div");
-      holder.classList.add("critter");
-      holder.innerHTML += `
-      <a href = ${c.url} target="_blank">
-        <img src="${c.image_url}">
-        ${this.capitalize(c.name)}
-      </a>
-      <div>
-        <p>
-          <span>Avalible:</span>
-          </br>
-          ${c.north.availability_array[0].months}
-          </br>
-          ${c.north.availability_array[0].time}
-        </p>
-        <p>
-          <span>Location:</span>
-          </br>
-          ${c.location} 
-        </p>
-        </div>
-      `;
-      res.push(holder);
-    });
-    return res;
-  }
-  generateFish(creatures: Fish[]) {
-    const res: HTMLDivElement[] = [];
-    creatures.forEach((c) => {
-      let holder = document.createElement("div");
-      holder.classList.add("critter");
-      holder.innerHTML += `
-      <a class="flex" href = ${c.url} target="_blank">
-        <img src="${c.image_url}">
-        ${this.capitalize(c.name)}
-      </a>
-      <div>
-        <p>
-          <span>Avalible:</span></br>
-          ${c.north.availability_array[0].months}</br>
-          ${c.north.availability_array[0].time}
-        </p>
-        <p>
-          <span>Shadow size:</span></br>
-          ${c.shadow_size} 
-        </p>
-        <p>
-          <span>Location:</span></br>
-          ${c.location} 
-        </p>
-      </div>
-      `;
-      res.push(holder);
-    });
-    return res;
-  }
+
   /*
   Det sparas ett världe i model som visar om ett kort är insamlat eller inte 
   När man clickar på ett görs följande:
@@ -285,9 +192,6 @@ const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
 
-controller.findCreature("Blue marlin").then((creature) => {
-  view.printAvalible(creature);
-});
 
 async function printAllCreatures() {
   model
