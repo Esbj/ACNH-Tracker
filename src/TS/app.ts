@@ -41,7 +41,6 @@ class View {
     "#avalible"
   ) as HTMLElement;
   public found: HTMLElement = document.querySelector("#found") as HTMLElement;
-  private cards?: HTMLDivElement[];
   clear() {
     this.found.innerHTML = "";
     this.avalible.innerHTML = "";
@@ -80,7 +79,40 @@ class View {
     }
     this.avalible.append(div);
   }
-  printFound(creature: Creature<{}>) {}
+  printFound(creature: Creature<{}>) {
+    const div = document.createElement("div");
+    div.classList.add("critter found");
+    div.innerHTML = `
+      <a href = ${creature.url} target="_blank">
+        <img src = "${creature.image_url}">
+        ${controller.capitalize(creature.name)}
+      </a>
+      <div>
+        <p>
+          <span>Avalible:</span></br>
+          ${creature.north.availability_array[0].months}</br>
+          ${creature.north.availability_array[0].time}
+        </p>
+      </div>
+    `;
+    if (creature.shadow_size !== undefined) {
+      div.innerHTML += `
+      <p>
+        <span>Shaddow size:</span></br>
+        ${creature.shadow_size} 
+      </p> 
+      `;
+    }
+    if (creature.location !== undefined) {
+      div.innerHTML += `
+      <p>
+        <span>Location:</span></br>
+        ${creature.location} 
+      </p> 
+      `;
+    }
+    this.found.append(div);
+  }
 }
 
 class Controller {
@@ -123,6 +155,11 @@ class Controller {
       }
     });
     return foundCreatures;
+  }
+  flagCreature(creature:Creature<{}>){
+    const allCreatures = [...this.model.bugData, ...this.model.fishData, ...this.model.seaData]
+    creature.collected = true
+    allCreatures.map
   }
   monthToNumber(month: string): number {
     const currentMonth = new Date().getMonth() + 1;
@@ -183,7 +220,6 @@ class Controller {
 const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
-
 
 async function printAllCreatures() {
   model
