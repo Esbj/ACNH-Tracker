@@ -87,6 +87,9 @@ body {
           &:hover {
             text-decoration: underline;
           }
+          img{
+            @include center(128px)
+          }
         }
 
         p {

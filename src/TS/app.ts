@@ -54,43 +54,29 @@ class View {
     wikiLink.target="_blank"
     wikiLink.text = controller.capitalize(creature.name);
     
-
+    
     const img = document.createElement("img");
     img.src = creature.image_url;
     wikiLink.appendChild(img);
 
     const info = document.createElement("div");
+
+    const avalible = document.createElement("p");
+    avalible.innerHTML = `<span>Avalible: </span>  ${creature.north.availability_array[0].months} ${creature.north.availability_array[0].time}`
+    info.appendChild(avalible)
+    if (creature.shadow_size !== undefined){
+      const shaddow = document.createElement("p");
+      shaddow.innerHTML = `<span>Shaddow size: </span>${creature.shadow_size}`;
+      info.appendChild(shaddow)
+    }
+    if (creature.location !== undefined){
+      const location = document.createElement("p");
+      location.innerHTML = `<span>Location: </span>${creature.location}`;
+      info.appendChild(location)
+    }
+
     
     card.append(wikiLink, info)
-    card.innerHTML = `
-      <a href = "${creature.url}#In_New_Horizons" target="_blank">
-        <img src = "${creature.image_url}">
-        ${controller.capitalize(creature.name)}
-      </a>
-      <div>
-        <p>
-          <span>Avalible:</span></br>
-          ${creature.north.availability_array[0].months}</br>
-          ${creature.north.availability_array[0].time}
-        </p>
-      </div>
-    `;
-    if (creature.shadow_size !== undefined) {
-      card.innerHTML += `
-      <p>
-        <span>Shaddow size:</span></br>
-        ${creature.shadow_size} 
-      </p> 
-      `;
-    }
-    if (creature.location !== undefined) {
-      card.innerHTML += `
-      <p>
-        <span>Location:</span></br>
-        ${creature.location} 
-      </p> 
-      `;
-    }
     this.avalible.append(card);
   }
   printFound(creature: Creature<{}>) {
