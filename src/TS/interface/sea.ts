@@ -1,4 +1,5 @@
-export interface Sea {
+import Creature from "./iCreature";
+export interface Sea extends Creature<Time> {
   name:            string;
   url:             string;
   number:          number;
@@ -12,11 +13,11 @@ export interface Sea {
   tank_width:      number;
   tank_length:     number;
   catchphrases:    string[];
-  north:           North;
-  south:           North;
+  north:           North<Time>;
+  south:           North<Time>;
 }
 
-export interface North {
+export interface North <Time>{
   availability_array: AvailabilityArray[];
   times_by_month:     { [key: string]: Time };
   months:             string;
