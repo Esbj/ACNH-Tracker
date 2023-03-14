@@ -46,10 +46,24 @@ class View {
     this.avalible.innerHTML = "";
   }
   printAvalible(creature: Creature<{}>) {
-    const div = document.createElement("div");
-    div.classList.add("critter");
-    div.innerHTML = `
-      <a href = ${creature.url} target="_blank">
+    const card = document.createElement("div");
+    card.classList.add("critter");
+
+    const wikiLink = document.createElement("a");
+    wikiLink.href = creature.url + "#In_New_Horizons"
+    wikiLink.target="_blank"
+    wikiLink.text = controller.capitalize(creature.name);
+    
+
+    const img = document.createElement("img");
+    img.src = creature.image_url;
+    wikiLink.appendChild(img);
+
+    const info = document.createElement("div");
+    
+    card.append(wikiLink, info)
+    card.innerHTML = `
+      <a href = "${creature.url}#In_New_Horizons" target="_blank">
         <img src = "${creature.image_url}">
         ${controller.capitalize(creature.name)}
       </a>
@@ -62,7 +76,7 @@ class View {
       </div>
     `;
     if (creature.shadow_size !== undefined) {
-      div.innerHTML += `
+      card.innerHTML += `
       <p>
         <span>Shaddow size:</span></br>
         ${creature.shadow_size} 
@@ -70,14 +84,14 @@ class View {
       `;
     }
     if (creature.location !== undefined) {
-      div.innerHTML += `
+      card.innerHTML += `
       <p>
         <span>Location:</span></br>
         ${creature.location} 
       </p> 
       `;
     }
-    this.avalible.append(div);
+    this.avalible.append(card);
   }
   printFound(creature: Creature<{}>) {
     const div = document.createElement("div");
