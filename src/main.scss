@@ -14,11 +14,12 @@ body {
     }
   }
   header {
-    border-radius: 25px;
+    @include borderRadius();
     background-image: url("../images/header.png");
     @include center(70%);
     padding: 3rem 0;
     margin-top: 5rem;
+    box-shadow: -12 14 5 rgba(0, 0, 0, 0.75);
     div {
       width: fit-content;
     }
@@ -29,7 +30,7 @@ body {
       h1 {
         background-color: $warm_beige;
         padding: 1.4rem;
-        border-radius: 25px;
+        @include borderRadius();
         color: $heading;
         font-family: "FinkHeavy";
         font-weight: lighter;
@@ -40,21 +41,21 @@ body {
       @include center(80%);
       justify-content: center;
       list-style-type: none;
-        li {
-          @include center(7rem);
-          text-align: center;
-          background-color: $light_beige;
-          padding: 10px;
-          border-radius: 25px;
-          font-family: "fot-rodin_pro_ub";
-          font-weight: 100;
-          &.active{
-            background-color: $warm_beige;
-          }
-          &:hover{
-            cursor: default;
-          }
+      li {
+        @include center(7rem);
+        text-align: center;
+        background-color: $light_beige;
+        padding: 10px;
+        @include borderRadius();
+        font-family: "fot-rodin_pro_ub";
+        font-weight: 100;
+        &.active {
+          background-color: $yellow;
         }
+        &:hover {
+          cursor: default;
+        }
+      }
     }
   }
 
@@ -62,9 +63,9 @@ body {
     @include center(90%);
     padding-top: 4rem;
     margin-top: 3rem;
-    background-color: $light_beige;
-    border-radius: 50px;
-    box-shadow: -20px 20px 15px black;
+    background-color: $warm_beige;
+    @include borderRadius(50px);
+    box-shadow: -20px 13px 5px rgba(0, 0, 0, 0.70);
     #avalible {
       @include flex(0, 0rem);
       margin: 0 2rem;
@@ -72,8 +73,8 @@ body {
         font-family: "Flink Heavy";
         margin: 1rem auto;
         padding: 2rem;
-        border: 5px solid $warm_beige;
-        border-radius: 25px;
+        border: 5px solid $dark;
+        @include borderRadius();
         @include flex(50px, 0rem);
         justify-content: center;
         background-color: $blue;
@@ -87,11 +88,15 @@ body {
           &:hover {
             text-decoration: underline;
           }
-          img{
-            @include center(128px)
+          img {
+            @include center(128px);
           }
         }
-
+        div {
+          @include borderRadius();
+          background-color: $light_beige;
+          padding: 25px;
+        }
         p {
           margin: 10px, 10px;
         }

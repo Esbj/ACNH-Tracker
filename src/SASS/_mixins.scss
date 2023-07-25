@@ -8,3 +8,6 @@
   column-gap: $col-gap;
   row-gap: $row-gap;
 }
+@mixin borderRadius($radius: 25px){
+  border-radius: $radius;
+}
